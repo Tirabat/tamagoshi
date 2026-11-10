@@ -5,15 +5,16 @@ const stamina = document.getElementById("stamina")
 const fatigue = document.getElementById("fatigue")
 const hungerH = document.getElementById("hunger")
 const wash1 = document.getElementById("wash1")
-const 
+const drinker = document.getElementById("drinker")
 
 let eat = 100
 let game = 100
 let sleep = 0
 let water = 100
+let drink1 = 100
 
 function eater() {
-    return Math.floor(Math.random() * 10) + 1
+    return Math.floor(Math.random() * 20) + 6
 }
 function sleeper() {
     return Math.floor(Math.random() * 20) + 16
@@ -52,13 +53,26 @@ function washSleep() {
     return Math.floor(Math.random() * 20) + 16
 }
 function washer() {
-    return Math.floor(Math.random() * 30) + 21   // +21..50
+    return Math.floor(Math.random() * 30) + 21
+}
+function drink() {
+    return Math.floor(Math.random() * 25) + 11
+}
+function drinkEat() {
+    return Math.floor(Math.random() * 5) + 1
+}
+function drinkGame() {
+    return Math.floor(Math.random() * 35) + 11
+}
+function drinkSleep() {
+    return Math.floor(Math.random() * 25) + 1
 }
 
 stamina.innerHTML = game + '% 🔋'
 hungerH.innerHTML = eat + '% 🍗'
 fatigue.innerHTML = sleep + '% 😴'
 wash1.innerHTML = water + '% 🚿'
+drinker.innerHTML = drink1 + '% 💧'
 
 button.addEventListener('click', () => {
     if (choice.value === 'food') {
@@ -67,6 +81,7 @@ button.addEventListener('click', () => {
             game = Math.min(game + gamer(), 100);
             sleep = Math.max(0, Math.min(sleep + fatiguer(), 100));
             water = Math.max(0, Math.min(water - washEat(), 100));
+            drink1 = Math.max(0, Math.min(drink1 + drinkEat(), 100));
             talk.innerHTML = 'Бен поел и готов играть'
         }
         else if (eat === 100) {
@@ -78,11 +93,12 @@ button.addEventListener('click', () => {
         }
     }
     else if (choice.value === 'play') {
-        if (game > 0 && eat > 0 && sleep < 100) {
+        if (game > 0 && eat > 0 && sleep < 100 && drink1 > 0) {
             eat = Math.max(0, Math.min(eat - hunger(), 100));
             sleep = Math.max(0, Math.min(sleep + fatiguer1(), 100));
             game = Math.max(0, game - gamer1());
             water = Math.max(0, Math.min(water - washGame(), 100));
+            drink1 = Math.max(0, Math.min(drink1 - drinkGame(), 100));
             talk.innerHTML = 'Бен поиграл и теперь у него урчит в животе'
         }
         else if (sleep === 100) {
@@ -97,25 +113,34 @@ button.addEventListener('click', () => {
             talk.innerHTML = 'Бен голоден и не может дальше играть'
             return
         }
+        else if (drink1 === 0) {
+            talk.innerHTML = 'Бен хочет пить'
+            return
+        }
     }
     else if (choice.value === 'sleep') {
-        if (sleep > 0 && eat > 0 && water > 0) {
+        if (sleep > 0 && eat > 0 && water > 0 && drink1 > 0) {
             sleep = Math.max(0, Math.min(sleep - sleeper1(), 100));
             game = Math.max(0, Math.min(game + sleeper(), 100));
             eat = Math.max(0, Math.min(eat - hunger1(), 100));
             water = Math.max(0, Math.min(water - washSleep(), 100));
+            drink1 = Math.max(0, Math.min(drink1 - drinkSleep(), 100));
             talk.innerHTML = 'Бен поспал и немного проголадался'
         }
         else if (sleep === 0) {
             talk.innerHTML = 'Бен полон сил и не хочет спать'
             return
         }
-        else if (eat <= 0){
+        else if (eat <= 0) {
             talk.innerHTML = 'Бен голоден и не может спать'
             return
         }
-        else if (water <= 0){
+        else if (water <= 0) {
             talk.innerHTML = 'Бен не может лечь спать грязным'
+            return
+        }
+        else if (drink1 === 0) {
+            talk.innerHTML = 'Бен не может уснуть, он хочет пить'
             return
         }
     }
@@ -134,4 +159,5 @@ button.addEventListener('click', () => {
     hungerH.innerHTML = eat + '% 🍗'
     fatigue.innerHTML = sleep + '% 😴'
     wash1.innerHTML = water + '% 🚿'
+    drinker.innerHTML = drink1 + '% 💧'
 })
