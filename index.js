@@ -51,7 +51,7 @@ tostudy.innerHTML = job + '% 📚 '
 button.addEventListener('click', () => {
     if (choice.value === 'food') {
         if (eat < 100 && sleep < 100) {
-            eat = Math.min(eat + rnd(6, 25), 100);
+            eat = Math.min(eat + rnd(1, 15), 100);
             game = Math.min(game + rnd(6, 15), 100);
             sleep = Math.max(0, Math.min(sleep + rnd(1, 10), 100));
             water = Math.max(0, Math.min(water - rnd(1, 5), 100));
@@ -66,6 +66,22 @@ button.addEventListener('click', () => {
         }
         else if (sleep === 100) {
             talk.innerHTML = 'Бен очень хочет спать и не может сейчас есть'
+        }
+    }
+    else if (choice.value === 'cook'){
+        if (sleep < 100 && game > 0 && eat > 0){
+            eat = Math.min(eat + rnd(10, 30), 100);
+            sleep = Math.max(0, Math.min(sleep - rnd(5, 20), 100));
+            game = Math.max(0, Math.min(game - rnd(10, 25), 100));
+            talk.innerHTML = 'Вы приготовили еду для Бена'
+        }
+        else if (sleep === 100){
+            talk.innerHTML = 'Бен устал и не может готовить'
+            return
+        }
+        else if (eat === 0){
+            talk.innerHTML = 'Бен сыт и нет нужды готовить'
+            return
         }
     }
     else if (choice.value === 'play') {
@@ -168,8 +184,8 @@ button.addEventListener('click', () => {
                 job = Math.min(100, job + rnd(1, 15))
                 talk.innerHTML = 'Бен стал умнее'
                 sleep = Math.max(0, Math.min(sleep + rnd(1, 10), 100));
-                virusi
             }
+            virusi
         }
         else if (job === 100) {
             talk.innerHTML = 'Бен настоящий гений и не нуждается в этих ваших учебниках'
