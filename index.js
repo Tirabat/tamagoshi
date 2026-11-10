@@ -9,6 +9,8 @@ const drinker = document.getElementById("drinker")
 const healer = document.getElementById("healer")
 const tostudy = document.getElementById("tostudy")
 const pupu = document.getElementById("pupu")
+const houer = document.getElementById("houer")
+const sleepInput = document.getElementById("sleepInput")
 
 let eat = 100
 let game = 100
@@ -33,7 +35,6 @@ function heal() {
         }
     }
 }
-
 function virusi() {
     if (virus === 1) {
         health = Math.max(0, health - 5)
@@ -41,15 +42,13 @@ function virusi() {
         health = Math.min(100, health + 5)
     }
 }
-
 function hourer(){
     if (hour < 23){
-        hour++
+        hour += 1
     } else if (hour === 23){
         hour = 0
     }
 }
-
 function updateUI() {
     stamina.innerHTML = game + '% 🔋'
     hungerH.innerHTML = eat + '% 🍗'
@@ -59,7 +58,16 @@ function updateUI() {
     healer.innerHTML = health + '% ❤️'
     tostudy.innerHTML = job + '% 📚'
     pupu.innerHTML = pipi + '% 🚽'
+    houer.innerHTML = hour + ':00 🕒'
 }
+
+choice.addEventListener('change', () => {
+    if (choice.value.trim() === 'sleep') {
+        sleepInput.style.display = 'inline-block'
+    } else {
+        sleepInput.style.display = 'none'
+    }
+})
 
 updateUI()
 
@@ -110,7 +118,10 @@ button.addEventListener('click', () => {
             drink1 = Math.max(0, drink1 - rnd(11, 45));
             talk.innerHTML = 'Бен поиграл и теперь у него урчит в животе'
             heal()
-            virusi()
+            health = Math.min(100, health + 15)
+            if (health === 100){
+                virus === 0
+            }
             hourer()
         } else if (sleep === 100) {
             talk.innerHTML = 'Бен очень устал и нуждается в отдыхе'
@@ -124,13 +135,22 @@ button.addEventListener('click', () => {
     }
     
     else if (currentChoice === 'sleep') {
+        let hours = Number(sleepInput.value) || 1;
+        if (hours < 1) hours = 1;
+        if (hours > 12) hours = 12;
+
         if (sleep > 0 && eat > 0 && water > 0 && drink1 > 0) {
-            sleep = Math.max(0, sleep - rnd(11, 20));
-            game = Math.min(game + rnd(16, 35), 100);
-            eat = Math.max(0, eat - rnd(6, 20));
-            water = Math.max(0, water - rnd(16, 35));
-            drink1 = Math.max(0, drink1 - rnd(1, 25));
-            talk.innerHTML = 'Бен поспал и немного проголодался'
+            sleep = Math.max(0, sleep - (rnd(10, 15) * hours));
+            game = Math.min(100, game + (rnd(10, 20) * hours));
+            eat = Math.max(0, eat - (rnd(5, 10) * hours));
+            water = Math.max(0, water - (rnd(5, 12) * hours));
+            drink1 = Math.max(0, drink1 - (rnd(5, 15) * hours));
+            
+            for (let i = 0; i < hours; i++) {
+                hourer();
+            }
+
+            talk.innerHTML = 'Бен поспал ' + hours + ' ч. и проголодался';
             virusi()
         } else if (sleep === 0) {
             talk.innerHTML = 'Бен полон сил и не хочет спать'
