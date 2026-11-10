@@ -26,12 +26,15 @@ function heal() {
             virus = 1
             talk.innerHTML = 'Бен заболел и теперь его здоровье будет только ухудшаться'
         }
-        else {
-            health = Math.min(100, health + 5)
-        }
     }
-    else if (virus === 1) {
-        health = Math.max(0, health - 5)
+}
+
+function virusi() {
+    if (virus === 1){
+        health = Math.min(100, health - 5)
+    }
+    else{
+        health = Math.min(100, health + 5)
     }
 }
 
@@ -52,6 +55,7 @@ button.addEventListener('click', () => {
             drink1 = Math.max(0, Math.min(drink1 + rnd(1, 5), 100));
             talk.innerHTML = 'Бен поел и готов играть'
             heal()
+            virusi()
         }
         else if (eat === 100) {
             talk.innerHTML = 'Бен уже сыт и не хочет еще'
@@ -70,6 +74,7 @@ button.addEventListener('click', () => {
             drink1 = Math.max(0, Math.min(drink1 - rnd(11, 45), 100));
             talk.innerHTML = 'Бен поиграл и теперь у него урчит в животе'
             heal()
+            virusi()
         }
         else if (sleep === 100) {
             talk.innerHTML = 'Бен очень устал и нуждается в отдыхе'
@@ -96,6 +101,7 @@ button.addEventListener('click', () => {
             water = Math.max(0, Math.min(water - rnd(16, 35), 100));
             drink1 = Math.max(0, Math.min(drink1 - rnd(1, 25), 100));
             talk.innerHTML = 'Бен поспал и немного проголадался'
+            virusi()
         }
         else if (sleep === 0) {
             talk.innerHTML = 'Бен полон сил и не хочет спать'
@@ -124,15 +130,32 @@ button.addEventListener('click', () => {
             game = Math.max(0, game - rnd(1, 5));
             talk.innerHTML = 'Бен помылся и готов дальше узнавать этот мир'
             heal()
+            virusi()
         }
     }
-    else if (choice.value === 'deink'){
-        if (drink1 === 0){
+    else if (choice.value === 'drink') {
+        if (drink1 < 100) {
             drink1 = Math.min(100, drink1 + rnd(15, 35))
             talk.innerHTML = 'Бен попил и теперь готов продолжать'
+            virusi()
         }
-        else if ()
+        else if (drink1 === 100){
+            talk.innerHTML = 'Бен и так много попил и больше не сможет'
+            return
+        }
     }
+    else if (choice.value === 'heal'){
+        if (virus === 0){
+            talk.innerHTML = 'Бен здоров и не нуждается в лечении'
+            return
+        }
+        else if (virus === 1){
+            virus = 0
+            health = 100
+            talk.innerHTML = 'Бен выздоровил'
+        }
+    }
+
     stamina.innerHTML = game + '% 🔋'
     hungerH.innerHTML = eat + '% 🍗'
     fatigue.innerHTML = sleep + '% 😴'
