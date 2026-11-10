@@ -51,6 +51,7 @@ button.addEventListener('click', () => {
             water = Math.max(0, Math.min(water - rnd(1, 5), 100));
             drink1 = Math.max(0, Math.min(drink1 + rnd(1, 5), 100));
             talk.innerHTML = 'Бен поел и готов играть'
+            heal()
         }
         else if (eat === 100) {
             talk.innerHTML = 'Бен уже сыт и не хочет еще'
@@ -122,7 +123,15 @@ button.addEventListener('click', () => {
             water = Math.min(100, water + rnd(21, 50))
             game = Math.max(0, game - rnd(1, 5));
             talk.innerHTML = 'Бен помылся и готов дальше узнавать этот мир'
+            heal()
         }
+    }
+    else if (choice.value === 'deink'){
+        if (drink1 === 0){
+            drink1 = Math.min(100, drink1 + rnd(15, 35))
+            talk.innerHTML = 'Бен попил и теперь готов продолжать'
+        }
+        else if ()
     }
     stamina.innerHTML = game + '% 🔋'
     hungerH.innerHTML = eat + '% 🍗'
