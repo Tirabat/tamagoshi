@@ -8,6 +8,8 @@ const wash1 = document.getElementById("wash1")
 const drinker = document.getElementById("drinker")
 const healer = document.getElementById("healer")
 const tostudy = document.getElementById("tostudy")
+const pupu = document.getElementById("pupu")
+
 
 let eat = 100
 let game = 100
@@ -17,11 +19,12 @@ let drink1 = 100
 let health = 100
 let virus = 0
 let job = 0
+let hour = 12
+let papa = 0
 
 function rnd(min, max) {
     return Math.floor(Math.random() * (max - min + 1)) + min
 }
-
 function heal() {
     if (virus === 0) {
         if (rnd(1, 100) <= 15) {
@@ -30,13 +33,20 @@ function heal() {
         }
     }
 }
-
 function virusi() {
     if (virus === 1) {
         health = Math.min(100, health - 5)
     }
     else {
         health = Math.min(100, health + 5)
+    }
+}
+function hourer(){
+    if (hour < 23){
+        hour ++
+    }
+    else if (hour === 23){
+        hour = 0
     }
 }
 
@@ -47,6 +57,7 @@ wash1.innerHTML = water + '% 🚿'
 drinker.innerHTML = drink1 + '% 💧'
 healer.innerHTML = health + '% ❤️'
 tostudy.innerHTML = job + '% 📚 '
+pupu.innerHTML = pipi + '% 🚽 '
 
 button.addEventListener('click', () => {
     if (choice.value === 'food') {
@@ -56,9 +67,11 @@ button.addEventListener('click', () => {
             sleep = Math.max(0, Math.min(sleep + rnd(1, 10), 100));
             water = Math.max(0, Math.min(water - rnd(1, 5), 100));
             drink1 = Math.max(0, Math.min(drink1 + rnd(1, 5), 100));
+            papa = Math.min(papa + rnd(1, 10), 100);
             talk.innerHTML = 'Бен поел и готов играть'
             heal()
             virusi()
+            hourer()
         }
         else if (eat === 100) {
             talk.innerHTML = 'Бен уже сыт и не хочет еще'
@@ -73,7 +86,10 @@ button.addEventListener('click', () => {
             eat = Math.min(eat + rnd(10, 30), 100);
             sleep = Math.max(0, Math.min(sleep - rnd(5, 20), 100));
             game = Math.max(0, Math.min(game - rnd(10, 25), 100));
+            papa = Math.min(papa + rnd(5, 20), 100);
             talk.innerHTML = 'Вы приготовили еду для Бена'
+            hourer()
+            virusi()
         }
         else if (sleep === 100){
             talk.innerHTML = 'Бен устал и не может готовить'
@@ -94,6 +110,7 @@ button.addEventListener('click', () => {
             talk.innerHTML = 'Бен поиграл и теперь у него урчит в животе'
             heal()
             virusi()
+            hourer()
         }
         else if (sleep === 100) {
             talk.innerHTML = 'Бен очень устал и нуждается в отдыхе'
@@ -147,16 +164,20 @@ button.addEventListener('click', () => {
         else if (water < 100) {
             water = Math.min(100, water + rnd(21, 50))
             game = Math.max(0, game - rnd(1, 5));
+            papa = Math.min(papa + rnd(5, 15), 100);
             talk.innerHTML = 'Бен помылся и готов дальше узнавать этот мир'
             heal()
             virusi()
+            hourer()
         }
     }
     else if (choice.value === 'drink') {
         if (drink1 < 100) {
             drink1 = Math.min(100, drink1 + rnd(15, 35))
+            papa = Math.min(papa + rnd(10, 30), 100);
             talk.innerHTML = 'Бен попил и теперь готов продолжать'
             virusi()
+            hourer()
         }
         else if (drink1 === 100) {
             talk.innerHTML = 'Бен и так много попил и больше не сможет'
@@ -185,10 +206,25 @@ button.addEventListener('click', () => {
                 talk.innerHTML = 'Бен стал умнее'
                 sleep = Math.max(0, Math.min(sleep + rnd(1, 10), 100));
             }
-            virusi
+            papa = Math.min(papa + rnd(1, 10), 100);
+            virusi()
+            hourer()
         }
         else if (job === 100) {
             talk.innerHTML = 'Бен настоящий гений и не нуждается в этих ваших учебниках'
+            return
+        }
+    }
+    else if (choice.value === 'pipi '){
+        if (pupu < 100){
+            papa = Math.max(0, Math.min(papa - rnd(1, 30), 100));
+            virusi()
+            hourer()
+            drink1 = Math.min(100, drink1 + rnd(1, 10))
+            talk.innerHTML = 'Бен чуствует облегчение'
+        }
+        else if (pupu === 0){
+            talk.innerHTML = 'Не зачем Бену туда идти'
             return
         }
     }
@@ -200,5 +236,6 @@ button.addEventListener('click', () => {
     drinker.innerHTML = drink1 + '% 💧'
     healer.innerHTML = health + '% ❤️'
     tostudy.innerHTML = job + '% 📚 '
+    pupu.innerHTML = pipi + '% 🚽 '
 
 })
